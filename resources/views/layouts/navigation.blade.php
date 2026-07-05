@@ -12,8 +12,14 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link :href="route('note.index')" :active="request()->routeIs('note.index')">
+                        {{ __('日記一覧') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('note.create')" :active="request()->routeIs('note.create')">
+                        {{ __('日記を書く') }}
                     </x-nav-link>
                 </div>
             </div>

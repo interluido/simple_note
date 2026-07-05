@@ -36,7 +36,7 @@
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <x-dropdown align="right" width="48">
                                 <x-slot name="trigger">
-                                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-small rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                         <div>{{ Auth::user()->name }}</div>
 
                                         <div class="ms-1">
@@ -118,13 +118,13 @@
         <div class="flex items-center justify-center transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 -mt-16">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-center">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10">
-                    <h1 class="text-4xl font-bold text-gray-900 mb-6">1行日記</h1>
+                    <h1 class="text-4xl font-bold text-gray-900 mb-6">ひとこと日記</h1>
                     <p class="text-gray-600 mb-10">今日のできごとを、ひとこと。</p>
 
                     @auth
-                        <a href="{{ route('note.create') }}" 
-                        class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-full font-semibold hover:bg-indigo-700 transition">
-                            日記を書く
+                        <a href="{{ route('note.index') }}" 
+                        class="inline-block bg-sky-600 text-white px-6 py-2 rounded-lg font-semibold hover:bg-sky-700 transition">
+                            日記を開く
                         </a>
                     @else
                         <div class="flex justify-center gap-4">

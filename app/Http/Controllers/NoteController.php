@@ -7,17 +7,29 @@ use App\Models\Note;
 
 class NoteController extends Controller
 {
+    public function index()
+    {
+        $notes = Note::orderBy('date', 'desc')->paginate(5);
+        return view('note.index', compact('notes'));
+    }
+
     public function create()
     {
         return view('note.create');
     }
 
+
     public function store(Request $request)
     {
+        // 画像有無チェック
+        $request->merge([
+            'has_image' => $request->hasFile('image_input') ? '1' : ($request->old('has_image') ?? '0')
+        ]);
+
         // バリデーションチェック
         $request->validate([
             'date' => 'required|date',
-            'note' => 'required|string|max:255',
+            'note' => 'required|string|max:256',
             'image_input' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
