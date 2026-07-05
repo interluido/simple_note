@@ -14,31 +14,33 @@ class NoteController extends Controller
 
     public function store(Request $request)
     {
+        // バリデーションチェック
+        $request->validate([
+            'date' => 'required|date',
+            'note' => 'required|string|max:255',
+            'image_input' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+        ]);
+
+        // 日付重複判定
         if (Note::where('date', $request->date)->exists()) {
             return back()->withErrors(['date' => 'その日の日記はすでに投稿済みです。']);
         }
 
-        $request->validate([
-            'text' => 'required|string|max:255',
-            'color_code' => 'required|string',
-            'image_path' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
-        ]);
-
-        $data = $request->all();
-
-        if ($request->hasFile('image_path')) {
-            // storage/app/public/images に保存
-            $path = $request->file('image_path')->store('images', 'public');
-            $data['image_path'] = $path;
+        // カラー取得
+        if ($request->color_option == "custom") {
+            $color_code = $request->color_code;
         }
 
-        // return redirect()->route('note.index')->with('success', '日記を投稿しました！');
+        // 画像保存
+        if ($request->hasFile('image_input')) {
+            $path = $request->file('image_input')->store('images', 'public');
+        }
 
         $note = Note::create([
             'date' => $request->date,
-            'text' => $request->text,
-            'color_code' => $request->color_code,
-            'image_path' => $path ?? null, // 画像がある場合のみ保存
+            'note' => $request->note,
+            'color_code' => $color_code ?? null,
+            'image_path' => $path ?? null,
         ]);
 
         $request->session()->flash('message', '投稿しました。');

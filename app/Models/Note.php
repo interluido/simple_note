@@ -11,7 +11,7 @@ class Note extends Model
 
     protected $fillable = [
         'date',
-        'text',
+        'note',
         'color_code',
         'image_path',
     ];

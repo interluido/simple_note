@@ -115,11 +115,11 @@
             </div> --}}
         </nav>
 
-        <div class="flex items-center justify-center transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+        <div class="flex items-center justify-center transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 -mt-16">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-center">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10">
-                    <h1 class="text-4xl font-bold text-gray-900 mb-6">今日のできごとを、ひとこと。</h1>
-                    <p class="text-gray-600 mb-10">日々の小さな瞬間を大切に記録する、あなたのための日記サイトです。</p>
+                    <h1 class="text-4xl font-bold text-gray-900 mb-6">1行日記</h1>
+                    <p class="text-gray-600 mb-10">今日のできごとを、ひとこと。</p>
 
                     @auth
                         <a href="{{ route('note.create') }}" 

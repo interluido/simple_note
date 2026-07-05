@@ -4,6 +4,6 @@
 <img
     src="{{ asset('storage/logo.png') }}"
     alt="logo"
-    width="60px"
-    height="60px"
+    width="76x"
+    height="76px"
 >

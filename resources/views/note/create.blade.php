@@ -6,46 +6,95 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-6">
-        @if ($errors->any())
-            <div class="text-red-600">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
         @if (session('message'))
             <div class="text-red-600 font-bold">
                 {{ session('message') }}
             </div>
         @else
-            <form action="{{ route('note.store') }}" method="POST" enctype="multipart/form-data">
+            <form class="mt-4 max-w-lg mx-auto p-6 bg-white rounded-xl shadow-sm border border-gray-100" action="{{ route('note.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="hidden" name="date" value="{{ date('Y-m-d') }}">
-                <div class="w-full flex flex-col">
-                    <label for="text" class="font-semibold mt-4">きょうのできごと</label>
-                    <textarea name="text" class="w-auto py-2 border border-gray-300 rounded-md" id="text" cols="30" rows="1"></textarea>
+                {{-- 日付を変更できない仕様とする場合 --}}
+                <div class="mb-2">
+                    <label for="date" class="block text-sm font-medium text-gray-700 mb-1">日付</label>
+                    <input type="hidden" name="date" value="{{ date('Y-m-d') }}">
+                    <label name="date">{{ date('Y-m-d') }}</label>
                 </div>
 
-                <div class="mb-3">
-                    <label for="color_code" class="form-label">カラー選択</label>
-                    <input type="color" 
-                        class="form-control form-control-color w-100" 
-                        id="color_code" 
-                        name="color_code" 
-                        title="色を選択してください">
+                {{-- <div class="mb-2">
+                    <label for="date" class="block text-sm font-medium text-gray-700 mb-1">日付</label>
+                    <input type="date" name="date" id="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" value="{{ date('Y-m-d') }}">
+                </div> --}}
+
+                <div class="mb-2">
+                    <label for="note" class="block text-sm font-medium text-gray-700 mb-1">きょうのできごと</label>
+                    <textarea name="note" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition" id="text" rows="1"placeholder=""></textarea>
                 </div>
 
-                <div class="w-full flex flex-col">
-                    <label for="image_path" class="font-semibold mt-4">画像</label>
-                    <input type="file" id="image_path" name="image_path" accept="image/*">
+                <div class="mb-2">
+                    <label for="color_code" class="block text-sm font-medium text-gray-700 mb-2">今のあなたらしいと感じる色</label>
+                    <div class="flex items-center gap-4">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="color_option" value="none" checked class="block text-sm text-gray-700 mr-2" onchange="toggleColorPicker()"> 指定しない
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="color_option" value="custom" class="mr-2" onchange="toggleColorPicker()">
+                            <input type="color" id="color_picker" name="color_code" disabled class="h-8 w-16 cursor-pointer rounded border border-gray-300 disabled:opacity-50 disabled:cursor-not-allowed">
+                        </label>
+                    </div>
                 </div>
 
-                <x-primary-button class="mt-4">
-                    送信
-                </x-primary-button>
+                <div class="mb-2">
+                    <label for="image_input" class="block text-sm font-medium text-gray-700 mb-1">画像</label>
+                    <input type="file" id="image_input" name="image_input" accept="image/*" class="mb-3 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700">
+                    
+                    <div id="preview_area" class="hidden">
+                        <img id="image_preview" src="#" alt="プレビュー" class="max-h-40 rounded-lg shadow-sm">
+                    </div>
+                </div>
+
+                <div class="flex mt-4 items-center justify-between">
+                    <div class="flex-1 text-left">
+                        @if ($errors->any())
+                            <div class="text-red-600">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                    <x-primary-button class="ml-4">
+                        送信する
+                    </x-primary-button>
+                </div>
             </form>
+
+            <script>
+                // 色選択
+                function toggleColorPicker() {
+                    const isCustom = document.querySelector('input[name="color_option"][value="custom"]').checked;
+                    const picker = document.getElementById('color_picker');
+                    
+                    picker.disabled = !isCustom;
+                }
+
+                // 画像プレビュー
+                document.getElementById('image_input').addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    const preview = document.getElementById('image_preview');
+                    const area = document.getElementById('preview_area');
+
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            preview.src = e.target.result;
+                            area.classList.remove('hidden');
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                });
+            </script>
         @endif
     </div>
 </x-app-layout>
