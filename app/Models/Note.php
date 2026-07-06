@@ -15,4 +15,8 @@ class Note extends Model
         'color_code',
         'image_path',
     ];
+
+    protected $casts = [
+        'date' => 'date',
+    ];
 }
