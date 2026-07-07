@@ -115,4 +115,18 @@ class NoteController extends Controller
         $request->session()->flash('message', $date_with_weekday . 'の日記を更新しました。');
         return redirect()->route('note.index');
     }
+
+    public function destroy(Request $request, Note $note)
+    {
+        if ($note->image_path) {
+            Storage::disk('public')->delete($note->image_path);
+        }
+
+        $dateObj = Carbon::parse($note->date);
+        $date_with_weekday = $dateObj->translatedFormat('Y年n月j日(D)');
+
+        $note->delete();
+        $request->session()->flash('message', $date_with_weekday . 'の日記を削除しました。');
+        return redirect()->route('note.index');
+    }
 }

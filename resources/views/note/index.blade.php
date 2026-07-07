@@ -25,7 +25,7 @@
                     <a href="{{ (route('note.edit', $note))}}" class="text-xs px-2 py-1 rounded border-2 hover:bg-gray-200">
                             編集
                     </a>
-                    <form action="{{ route('note.edit', $note) }}" method="POST">
+                    <form action="{{ route('note.destroy', $note) }}" method="POST">
                         @csrf
                         @method('delete')
                         <button type="submit" class="text-xs px-2 py-1 rounded border-2 hover:bg-red-100 text-red-600">
