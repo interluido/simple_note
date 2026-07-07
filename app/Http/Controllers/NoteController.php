@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Note;
+
 
 class NoteController extends Controller
 {
@@ -72,7 +74,6 @@ class NoteController extends Controller
 
     public function update(Request $request, Note $note)
     {
-        // 画像有無チェック
         $request->merge([
             'has_image' => $request->hasFile('image_input') ? '1' : ($request->old('has_image') ?? '0')
         ]);
@@ -89,6 +90,14 @@ class NoteController extends Controller
             $color_code = $request->color_code;
         }
 
+        // 画像有無チェック
+        if ($request->has('remove_image_checkbox')) {
+            // storage から実ファイルを削除
+            if ($note->image_path) {
+                Storage::disk('public')->delete($note->image_path);
+            }
+            $note->image_path = null;
+        }
         // 画像保存
         if ($request->hasFile('image_input')) {
             $path = $request->file('image_input')->store('images', 'public');

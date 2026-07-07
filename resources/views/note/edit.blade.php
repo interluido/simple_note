@@ -26,7 +26,7 @@
             </div>
 
             @php
-            $color_option = $note->color_code === '' ? 'none' : 'custom'
+            $color_option = $note->color_code == '' ? 'none' : 'custom'
             @endphp
             <div class="mb-2">
                 <label for="color_code" class="block text-sm font-medium text-gray-700 mb-2">今のあなたらしいと感じる色</label>
@@ -56,6 +56,10 @@
                 <div id="preview_area_old">
                     <img id="image_preview" src="{{ asset('storage/' . $note->image_path) }}" alt="プレビュー" class="max-h-40 max-w-full object-contain rounded-lg shadow-sm">
                 </div>
+                <label id="remove_image" class="flex items-center mt-2 text-sm text-red-600 cursor-pointer">
+                    <input type="checkbox" name="remove_image_checkbox" value='1' class="mr-2" {{ old('remove_image_checkbox') == '1' ? 'checked' : ''}}>
+                    画像を削除する
+                </label>
                 @endif
 
                 <input type="hidden" name="has_image" value="{{ old('has_image', '0') }}">
@@ -112,6 +116,7 @@
                 const preview = document.getElementById('image_preview');
                 const area = document.getElementById('preview_area');
                 const area_old = document.getElementById('preview_area_old');
+                const remove_image = document.getElementById('remove_image');
 
                 if (file) {
                     const reader = new FileReader();
@@ -119,10 +124,31 @@
                         preview.src = e.target.result;
                         area.classList.remove('hidden');
                         area_old.classList.add('hidden');
+                        remove_image.classList.add('hidden');
                     }
                     reader.readAsDataURL(file);
                 }
             });
+
+            function updatePreviewVisibility() {
+                const removeCheckbox = document.querySelector('input[name="remove_image_checkbox"]');
+                const previewAreaOld = document.getElementById('preview_area_old');
+                
+                if (removeCheckbox && previewAreaOld) {
+                    if (removeCheckbox.checked) {
+                        previewAreaOld.classList.add('hidden');
+                    } else {
+                        previewAreaOld.classList.remove('hidden');
+                    }
+                }
+            }
+
+            // oldによる表示時も処理を行う
+            document.addEventListener('DOMContentLoaded', updatePreviewVisibility);
+            const removeCheckbox = document.querySelector('input[name="remove_image_checkbox"]');
+            if (removeCheckbox) {
+                removeCheckbox.addEventListener('change', updatePreviewVisibility);
+            }
         </script>
     </div>
 </x-app-layout>

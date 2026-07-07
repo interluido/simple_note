@@ -7,9 +7,9 @@
 
     <div class="max-w-7xl mx-auto px-6 mb-4">
         @if (session('message'))
-            <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg">
+            <p class="text-center text-sm font-bold mt-4 p-2 text-blue-600 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg">
                 {{ session('message') }}
-            </div>
+            </p>
         @endif
         @forelse($notes as $note)
         <div class="mt-4 p-2 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
@@ -25,6 +25,13 @@
                     <a href="{{ (route('note.edit', $note))}}" class="text-xs px-2 py-1 rounded border-2 hover:bg-gray-200">
                             編集
                     </a>
+                    <form action="{{ route('note.edit', $note) }}" method="POST">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="text-xs px-2 py-1 rounded border-2 hover:bg-red-100 text-red-600">
+                            削除
+                        </button>
+                    </form>
                 </div>
             </div>
             <hr class="w-full">
