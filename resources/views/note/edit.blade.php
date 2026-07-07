@@ -46,7 +46,7 @@
 
             <div class="mb-2">
                 <label for="image_input" class="block text-sm font-medium text-gray-700 mb-1">画像</label>
-                <input type="file" id="image_input" name="image_input" accept="image/*"
+                <input type="file" id="image_input" name="image_input" accept="image/jpg"
                 class="mb-3 block text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700">
                 
                 <div id="preview_area" class="hidden">

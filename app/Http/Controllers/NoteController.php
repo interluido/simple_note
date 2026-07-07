@@ -34,7 +34,7 @@ class NoteController extends Controller
         $request->validate([
             'date' => 'required|date',
             'note' => 'required|string|max:256',
-            'image_input' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'image_input' => 'nullable|image|mimes:jpeg,jpg|max:2048',
         ]);
 
         // 日付重複判定
@@ -82,7 +82,7 @@ class NoteController extends Controller
         $request->validate([
             'date' => 'required|date',
             'note' => 'required|string|max:256',
-            'image_input' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'image_input' => 'nullable|image|mimes:jpeg,jpg|max:2048',
         ]);
 
         // カラー取得
