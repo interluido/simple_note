@@ -38,7 +38,7 @@ class NoteController extends Controller
         ]);
 
         // 日付重複判定
-        if (Note::where('date', $request->date)->exists()) {
+        if (Note::where('user_id', Auth::user()->id)->where('date', $request->date)->exists()) {
             return back()->withErrors(['date' => 'その日の日記はすでに投稿済みです。']);
         }
 
