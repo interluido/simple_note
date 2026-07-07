@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Note;
 
 class NoteController extends Controller
 {
     public function index()
     {
-        $notes = Note::orderBy('date', 'desc')->paginate(5);
+        $notes = Note::where('user_id', Auth::user()->id)->orderBy('date', 'desc')->paginate(5);
         return view('note.index', compact('notes'));
     }
 
@@ -49,6 +50,7 @@ class NoteController extends Controller
         }
 
         $note = Note::create([
+            'user_id' => Auth::user()->id,
             'date' => $request->date,
             'note' => $request->note,
             'color_code' => $color_code ?? null,
@@ -56,6 +58,6 @@ class NoteController extends Controller
         ]);
 
         $request->session()->flash('message', '投稿しました。');
-        return back();
+        return redirect()->route('note.index');
     }
 }

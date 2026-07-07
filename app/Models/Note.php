@@ -10,6 +10,7 @@ class Note extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'date',
         'note',
         'color_code',
@@ -19,4 +20,9 @@ class Note extends Model
     protected $casts = [
         'date' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

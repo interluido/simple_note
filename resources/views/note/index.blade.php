@@ -6,7 +6,7 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-6 mb-4">
-        @foreach($notes as $note)
+        @forelse($notes as $note)
         <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
             style="{{ $note->color_code ? 'border-color: ' . $note->color_code . ';' : 'border-color: transparent;' }}">
             <p class=" text-sm font-bold">
@@ -29,7 +29,11 @@
                 @endif
             </div>
         </div>
-        @endforeach
+        @empty
+        <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
+        <p>まだ日記がありません</p>
+        </div>
+        @endforelse
         <div class="my-4">
             {{ $notes->links() }}
         </div>
