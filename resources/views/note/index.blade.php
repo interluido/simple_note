@@ -6,22 +6,34 @@
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-6 mb-4">
+        @if (session('message'))
+            <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg">
+                {{ session('message') }}
+            </div>
+        @endif
         @forelse($notes as $note)
-        <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
+        <div class="mt-4 p-2 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
             style="{{ $note->color_code ? 'border-color: ' . $note->color_code . ';' : 'border-color: transparent;' }}">
-            <p class=" text-sm font-bold">
-                @php
-                $weekday = $note->date->translatedFormat('D')
-                @endphp
-                {{ $note->date->format('Y年n月j日') }} ({{ $weekday }})
-            </p>
+            <div class="flex items-center justify-between mb-1">
+                <p class="text-sm font-bold">
+                    @php
+                    $weekday = $note->date->translatedFormat('D')
+                    @endphp
+                    {{ $note->date->format('Y年n月j日') }} ({{ $weekday }})
+                </p>
+                <div class="flex items-center gap-2">
+                    <a href="{{ (route('note.edit', $note))}}" class="text-xs px-2 py-1 rounded border-2 hover:bg-gray-200">
+                            編集
+                    </a>
+                </div>
+            </div>
             <hr class="w-full">
-            <div class="flex justify-between items-center">
-                <p class="mt-4 p-4 text-md min-w-0 break-words">
+            <div class="flex justify-between items-center h-28 my-2">
+                <p class="my-4 p-4 text-md min-w-0 break-words">
                     {{ $note->note }}
                 </p>
                 @if($note->image_path)
-                <div class="w-24 h-24 flex-shrink-0 mt-4">
+                <div class="w-24 h-24 flex-shrink-0 my-2">
                     <button type="button" onclick="openModal('{{ asset('storage/' . $note->image_path) }}')">
                         <img src="{{ asset('storage/' . $note->image_path) }}" alt="note_image" class="w-24 h-24 object-cover rounded shadow">
                     </button>
@@ -30,8 +42,8 @@
             </div>
         </div>
         @empty
-        <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" 
-        <p>まだ日記がありません</p>
+        <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" >
+            <p>まだ日記がありません</p>
         </div>
         @endforelse
         <div class="my-4">

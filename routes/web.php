@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/note', [NoteController::class, 'index'])->name('note.index');
     Route::get('/note/create', [NoteController::class, 'create'])->name('note.create');
     Route::post('/note', [NoteController::class, 'store'])->name('note.store');
+    Route::get('/note/{note}/edit', [NoteController::class, 'edit'])->name('note.edit');
+    Route::patch('/note/{note}', [NoteController::class, 'update'])->name('note.update');
 });
 
 require __DIR__ . '/auth.php';
