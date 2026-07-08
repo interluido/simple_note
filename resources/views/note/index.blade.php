@@ -1,8 +1,21 @@
 <x-app-layout>
     <x-slot name="header">
-        <h1 class="font-semibold text-xl text-gray-800 leading-tight">
-            日記一覧
-        </h1>
+        <div class="lg:flex items-center justify-between">
+            <h1 class="font-semibold text-xl text-gray-800 leading-tight">
+                日記一覧
+            </h1>
+            <div class="max-w-md">
+                <form class="flex items-center" action="{{ route('note.index') }}" method="GET">
+                    @csrf
+                    <input name="keyword" class="w-40 h-[34px] text-gray-700 border-1 rounded "
+                    value="{{ request('keyword') }}" 
+                    placeholder="日記を検索" >
+                    <x-primary-button class="ml-4">
+                        検索
+                    </x-primary-button>
+                </form>
+            </div>
+        </div>
     </x-slot>
 
     <div class="max-w-7xl mx-auto px-6 mb-4">
@@ -50,7 +63,11 @@
         </div>
         @empty
         <div class="mt-4 p-4 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg" >
-            <p>まだ日記がありません</p>
+            @if ($is_search)
+                <p>検索結果がありません。</p>
+            @else
+                <p>まだ日記がありません。</p>
+            @endif
         </div>
         @endforelse
         <div class="my-4">

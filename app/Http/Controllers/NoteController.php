@@ -8,13 +8,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Note;
 
-
 class NoteController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $notes = Note::where('user_id', Auth::user()->id)->orderBy('date', 'desc')->paginate(5);
-        return view('note.index', compact('notes'));
+        $keyword = $request->keyword;
+        $is_search = '0';
+        if (!empty($keyword)) {
+            $notes = Note::where('user_id', Auth::user()->id)->where('note', 'LIKE', "%{$keyword}%")->orderBy('date', 'desc')->paginate(5);
+            $is_search = '1';
+        } else {
+            $notes = Note::where('user_id', Auth::user()->id)->orderBy('date', 'desc')->paginate(5);
+        }
+        return view('note.index', compact('notes', 'is_search'));
     }
 
     public function create()
@@ -39,7 +45,7 @@ class NoteController extends Controller
 
         // 日付重複判定
         if (Note::where('user_id', Auth::user()->id)->where('date', $request->date)->exists()) {
-            return back()->withErrors(['date' => 'その日の日記はすでに投稿済みです。']);
+            return back()->withInput()->withErrors(['date' => 'その日の日記はすでに投稿済みです。']);
         }
 
         // カラー取得
