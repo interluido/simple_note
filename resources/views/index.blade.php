@@ -83,7 +83,7 @@
                 <!-- Responsive Navigation Menu -->
                 <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">                 
                     <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200">
+                    <div class="pt-4 pb-1 border-t bg-gray-100 border-gray-200">
                         <div class="px-4">
                             <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
                             <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
@@ -115,7 +115,7 @@
             </div> --}}
         </nav>
 
-        <div class="flex items-center justify-center transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 -mt-16">
+        <div class="flex items-center justify-center transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0 ">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 text-center">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-10">
                     <h1 class="text-4xl font-bold text-gray-900 mb-6">ひとこと日記</h1>

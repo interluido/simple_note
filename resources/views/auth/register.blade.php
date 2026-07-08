@@ -40,12 +40,13 @@
         </div>
 
         <div class="flex items-center justify-between mt-4">
-            <a href="{{ route('login') }}" 
-                class="text-sm bg-white border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-100 transition">
-                ログインへ
+            <a href="{{ route('login') }}" >
+                <x-secondary-button class="ms-4">
+                    ログインへ
+                </x-secondary-button>
             </a>
             <div class="flex items-center justify-end">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                <a class="underline text-xs text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                     {{ __('Already registered?') }}
                 </a>
 

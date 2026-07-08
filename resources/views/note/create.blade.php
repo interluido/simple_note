@@ -56,10 +56,19 @@
                 <input type="hidden" name="has_image" value="{{ old('has_image', '0') }}">
             </div>
 
-            <div class="flex mt-4 items-center justify-between">
-                <div class="flex-1 text-left">
+            <div class="flex mt-4 items-center justify-end">
+                <a href="{{ route('note.index') }}" >
+                <x-secondary-button type="button">
+                    キャンセル
+                </x-secondary-button>
+                </a>
+                <x-primary-button class="ml-4">
+                    送信する
+                </x-primary-button>
+            </div>
+                <div class="flex-1 text-left mt-2">
                     @if ($errors->any())
-                        <div class="text-red-600">
+                        <div class="text-xs text-red-600">
                             <ul>
                                 @foreach ($errors->all() as $error)
                                     <li>{{ $error }}</li>
@@ -72,15 +81,6 @@
                         </div>
                     @endif
                 </div>
-                <a href="{{ route('note.index') }}" >
-                <x-secondary-button type="button">
-                    キャンセル
-                </x-secondary-button>
-                </a>
-                <x-primary-button class="ml-4">
-                    送信する
-                </x-primary-button>
-            </div>
         </form>
 
         <script>
