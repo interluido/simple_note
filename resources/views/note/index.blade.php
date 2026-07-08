@@ -20,7 +20,7 @@
 
     <div class="max-w-7xl mx-auto px-6 mb-4">
         @if (session('message'))
-            <p class="text-center text-sm font-bold mt-4 p-2 text-blue-600 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg">
+            <p class="text-center text-sm font-bold mt-4 p-2 bg-[#FDFDFD] w-full rounded-sm border-l-8 shadow-lg">
                 {{ session('message') }}
             </p>
         @endif
@@ -34,17 +34,17 @@
                     @endphp
                     {{ $note->date->format('Y年n月j日') }} ({{ $weekday }})
                 </p>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 rounded-lg">
                     <a href="{{ (route('note.edit', $note))}}" class="text-xs px-2 py-1 rounded border-2 hover:bg-gray-200">
                             編集
                     </a>
-                    <form action="{{ route('note.destroy', $note) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="text-xs px-2 py-1 rounded border-2 hover:bg-red-100 text-red-600">
+                    {{-- <form action="{{ route('note.destroy', $note) }}" method="POST"> --}}
+                        <button type="button" 
+                                onclick="openConfirmModal('{{ $note->date->format('Y年n月j日') }} ({{ $weekday }})', '{{ route('note.destroy', $note) }}')"
+                                class="text-xs px-2 py-1 rounded border-2 text-red-600 hover:bg-red-300">
                             削除
                         </button>
-                    </form>
+                    {{-- </form> --}}
                 </div>
             </div>
             <hr class="w-full">
@@ -54,7 +54,7 @@
                 </p>
                 @if($note->image_path)
                 <div class="w-24 h-24 flex-shrink-0 my-2">
-                    <button type="button" onclick="openModal('{{ asset('storage/' . $note->image_path) }}')">
+                    <button type="button" onclick="openImageModal('{{ asset('storage/' . $note->image_path) }}')">
                         <img src="{{ asset('storage/' . $note->image_path) }}" alt="note_image" class="w-24 h-24 object-cover rounded shadow">
                     </button>
                 </div>
@@ -73,32 +73,70 @@
         <div class="my-4">
             {{ $notes->links() }}
         </div>
-
-        <dialog id="imageModal" class="p-0 bg-transparent backdrop:bg-gray-800/80 ">
+        {{-- モーダル --}}
+        <dialog id="imageModal" class="p-0 rounded-lg shadow-xl backdrop:bg-gray-800/80">
             <div id="relative">
-                <img id="modalImage" src="" class="max-w-[90vw] max-h-[80vh] rounded-lg">
-                <button onclick="closeModal()" 
+                <img id="image" src="" class="max-w-[90vw] max-h-[80vh]">
+                <button onclick="closeImageModal()" 
                     class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center text-lg bg-gray-600 text-white font-bold shadow-lg hover:bg-gray-700 transition">
                     ✕
                 </button>
             </div>
         </dialog>
+        <dialog id="confirmModal" class="p-0 rounded-lg shadow-xl backdrop:bg-gray-800/50">
+            <div class="p-6">
+                <h5 class="text-lg font-bold mb-4">確認</h5>
+                <div id="modalBody" class="mb-6 text-gray-700"></div>
+                
+                <div class="flex justify-end gap-3">
+                    <button type="button" onclick="closeConfirmModal()" class="px-4 py-2 rounded-lg text-xs bg-gray-200 hover:bg-gray-300 text-gray-800 transition">
+                        キャンセル
+                    </button>
+                    <form id="deleteForm" action="" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button class="px-4 py-2 rounded-lg text-xs bg-red-600 hover:bg-red-700 text-white transition" type="submit">
+                            削除
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
 
         <script>
-            const modal = document.getElementById('imageModal');
-            const modalImg = document.getElementById('modalImage');
+            const imageModal = document.getElementById('imageModal');
+            const Image = document.getElementById('image');
 
-            function openModal(src) {
-                modalImg.src = src;
-                modal.showModal();
+            function openImageModal(src) {
+                Image.src = src;
+                imageModal.showModal();
             }
 
-            function closeModal() {
-                modal.close();
+            function closeImageModal() {
+                imageModal.close();
             }
 
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) closeModal();
+            imageModal.addEventListener('click', (e) => {
+                if (e.target === imageModal) closeImageModal();
+            });
+
+
+            const confirmModal = document.getElementById('confirmModal');
+            const form = document.getElementById('deleteForm');
+            const modalBody = document.getElementById('modalBody');
+
+            function openConfirmModal(date, action) {
+                modalBody.textContent =  date + 'の日記を削除してもよろしいですか。';
+                form.action = action;
+                confirmModal.showModal();
+            }
+
+            function closeConfirmModal() {
+                confirmModal.close();
+            }
+
+            confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) closeConfirmModal();
             });
         </script>
     </div>
