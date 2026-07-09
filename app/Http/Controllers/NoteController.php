@@ -103,7 +103,10 @@ class NoteController extends Controller
                 Storage::disk('public')->delete($note->image_path);
             }
             $note->image_path = null;
+        } else {
+            $path = $note->image_path;
         }
+
         // 画像保存
         if ($request->hasFile('image_input')) {
             $path = $request->file('image_input')->store('images', 'public');
