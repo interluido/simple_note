@@ -50,7 +50,7 @@
             <hr class="w-full">
             <div class="flex justify-between items-center h-28 my-2">
                 <p class="my-4 p-4 text-md min-w-0 break-words">
-                    {{ $note->note }}
+                    {!! nl2br(e($note->note)) !!}
                 </p>
                 @if($note->image_path)
                 <div class="w-24 h-24 flex-shrink-0 my-2">
